@@ -17,5 +17,11 @@ namespace Distribuidora.Shared.Entities
         [Required(ErrorMessage ="El campo {0} es obligatorio")]
         public string Name { get; set; } = null;
 
+        public ICollection<TipoLicor>? TipoLicors { get; set; }
+
+        [Display(Name = "Tipo de licor")]
+        public int TipoLicorsNumber => TipoLicors == null ? 0 : TipoLicors.Count;
+
+
     }
 }
