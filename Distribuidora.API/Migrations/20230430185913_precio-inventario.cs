@@ -5,7 +5,7 @@
 namespace Distribuidora.API.Migrations
 {
     /// <inheritdoc />
-    public partial class TipoLicorwithLicor : Migration
+    public partial class precioinventario : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -50,7 +50,9 @@ namespace Distribuidora.API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TipoLicorId = table.Column<int>(type: "int", nullable: false)
+                    TipoLicorId = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Stock = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {

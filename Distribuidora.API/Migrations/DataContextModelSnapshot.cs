@@ -34,6 +34,12 @@ namespace Distribuidora.API.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<float>("Stock")
+                        .HasColumnType("real");
+
                     b.Property<int>("TipoLicorId")
                         .HasColumnType("int");
 

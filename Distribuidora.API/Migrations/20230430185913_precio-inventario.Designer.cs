@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Distribuidora.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230430162303_AddTipoLicorsAndLicors")]
-    partial class AddTipoLicorsAndLicors
+    [Migration("20230430185913_precio-inventario")]
+    partial class precioinventario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,6 +36,12 @@ namespace Distribuidora.API.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<float>("Stock")
+                        .HasColumnType("real");
 
                     b.Property<int>("TipoLicorId")
                         .HasColumnType("int");

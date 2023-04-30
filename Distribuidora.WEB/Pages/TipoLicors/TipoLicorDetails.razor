@@ -23,6 +23,8 @@ else
                 <thead>
                     <tr>
                         <th>Licor</th>
+                        <th>Precio</th>
+                        <th>Inventario</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -32,6 +34,12 @@ else
                         <tr>
                             <td>
                                 @licor.Name
+                            </td>
+                            <td>
+                                @licor.Price
+                            </td>
+                            <td>
+                                @licor.Stock
                             </td>
                             <td>
                                 <a class="btn btn-warning" href="/licores/edit/@licor.Id">Editar</a>
