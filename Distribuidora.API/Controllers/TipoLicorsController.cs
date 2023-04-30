@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Distribuidora.API.Data;
 using Distribuidora.Shared.Entities;
+using Distribuidora.Shared.DTOs;
+using Distribuidora.API.Helpers;
 
 namespace Distribuidora.API.Controllers
 {
@@ -18,12 +20,31 @@ namespace Distribuidora.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<ActionResult> Get([FromQuery] PaginationDTO pagination)
         {
-            return Ok(await _context.TipoLicors
+            var queryable = _context.TipoLicors
                 .Include(x => x.Licors)
+                .Where(x => x.Sede!.Id == pagination.Id)
+                .AsQueryable();
+
+            return Ok(await queryable
+                .OrderBy(x => x.Name)
+                .Paginate(pagination)
                 .ToListAsync());
         }
+
+        [HttpGet("totalPages")]
+        public async Task<ActionResult> GetPages([FromQuery] PaginationDTO pagination)
+        {
+            var queryable = _context.TipoLicors
+                .Where(x => x.Sede!.Id == pagination.Id)
+                .AsQueryable();
+
+            double count = await queryable.CountAsync();
+            double totalPages = Math.Ceiling(count / pagination.RecordsNumber);
+            return Ok(totalPages);
+        }
+
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetAsync(int id)

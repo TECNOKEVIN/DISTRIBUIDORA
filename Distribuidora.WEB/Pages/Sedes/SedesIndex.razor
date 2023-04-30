@@ -10,6 +10,11 @@
 
 <h3>Sedes</h3>
 
+<Pagination CurrentPage="currentPage"
+            TotalPages="totalPages"
+            SelectedPage="SelectedPage" />
+
+
 <div class="mb-3">
     <a class="btn btn-primary" href="/sedes/create">Nueva sede</a>
 </div>
@@ -22,8 +27,9 @@
             <thead>
                 <tr>
                     <th>Sede</th>
-                    <th>Tipo de Licores</th>
-                    <th></th>
+                    <th style="width:220px">Tipo de licores</th>
+                    <th style="width:300px"></th>
+
                 </tr>
             </thead>
             <tbody>
@@ -54,17 +60,33 @@
 
 @code {
     public List<Sede>? Sedes { get; set; }
+    private int currentPage = 1;
+    private int totalPages;
+
 
     protected async override Task OnInitializedAsync()
     {
         await Load();
     }
 
-    private async Task Load()
+    private async Task SelectedPage(int page)
     {
-        var responseHppt = await repository.Get<List<Sede>>("api/sedes");
-        Sedes = responseHppt.Response!;
+        currentPage = page;
+        await Load(page);
     }
+
+
+    private async Task Load(int page = 1)
+    {
+        string url1 = $"api/sedes?page={page}";
+        string url2 = $"api/sedes/totalPages";
+
+        var responseHppt = await repository.Get<List<Sede>>(url1);
+        var responseHppt2 = await repository.Get<int>(url2);
+        Sedes = responseHppt.Response!;
+        totalPages = responseHppt2.Response!;
+    }
+
 
     private async Task Delete(Sede sede)
     {
