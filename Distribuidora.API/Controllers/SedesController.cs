@@ -26,6 +26,20 @@ namespace Distribuidora.API.Controllers
             return Ok(await _context.Sedes.ToListAsync());
         }
 
+        //get parametro
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult> Get(int id)
+        {
+            var country = await _context.Sedes.FirstOrDefaultAsync(x => x.Id == id);
+            if (country is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(country);
+        }
+
+
         //create
         [HttpPost]
         public async Task<ActionResult> Post(Sede sede)
@@ -34,6 +48,33 @@ namespace Distribuidora.API.Controllers
             await _context.SaveChangesAsync();
             return Ok(sede);
         }
+
+        //Update
+        [HttpPut]
+        public async Task<ActionResult> Put(Sede sede)
+        {
+            _context.Update(sede);
+            await _context.SaveChangesAsync();
+            return Ok(sede);
+        }
+
+
+        //Delete
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var afectedRows = await _context.Sedes
+                .Where(x => x.Id == id)
+                .ExecuteDeleteAsync();
+
+            if (afectedRows == 0)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
 
     }
 }

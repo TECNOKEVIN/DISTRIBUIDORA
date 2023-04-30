@@ -1,0 +1,35 @@
+﻿@page "/sedes/create"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService swal
+
+<h3>Crear Sede</h3>
+
+<SedeForm @ref="sedeForm" Sede="sede" OnValidSubmit="Create" ReturnAction="Return" />
+
+@code {
+    private Sede sede = new();
+    private SedeForm? sedeForm;
+
+    private async Task Create()
+    {
+        var httpResponse = await repository.Post("api/sedes", sede);
+
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.GetErrorMessageAsync();
+            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+        }
+        else
+        {
+            sedeForm!.FormPostedSuccessfully = true;
+            navigationManager.NavigateTo("sedes");
+        }
+    }
+
+    private void Return()
+    {
+        navigationManager.NavigateTo("/sedes");
+    }
+}
