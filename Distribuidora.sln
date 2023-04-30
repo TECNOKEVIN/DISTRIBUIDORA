@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribuidora.Shared", "Distribuidora.Shared\Distribuidora.Shared.csproj", "{6D423A69-0916-4EB1-AC11-973AB17BC56C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Distribuidora.Shared", "Distribuidora.Shared\Distribuidora.Shared.csproj", "{6D423A69-0916-4EB1-AC11-973AB17BC56C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribuidora.API", "Distribuidora.API\Distribuidora.API.csproj", "{CD00F441-B71C-4E25-A51A-9FACA9F00844}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Distribuidora.API", "Distribuidora.API\Distribuidora.API.csproj", "{CD00F441-B71C-4E25-A51A-9FACA9F00844}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Distribuidora.WEB", "Distribuidora.WEB\Distribuidora.WEB.csproj", "{19B1EF73-A21D-4475-B9B5-F98333B93A25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Distribuidora.WEB", "Distribuidora.WEB\Distribuidora.WEB.csproj", "{19B1EF73-A21D-4475-B9B5-F98333B93A25}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

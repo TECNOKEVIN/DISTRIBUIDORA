@@ -1,0 +1,51 @@
+﻿@page "/sedes"
+@using Distribuidora.Shared.Entities;
+@using Distribuidora.WEB.Repositories;
+
+@inject IRepository repository
+
+<h3>Sedes</h3>
+
+<div class="mb-3">
+    <a class="btn btn-primary" href="/sedes/create">Nueva sede</a>
+</div>
+
+<GenericList MyList="Sedes">
+
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Sede</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sede in Sedes!)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger">Borrar</button>
+                        </td>
+                        <td>
+                            @sede.Name
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </Body>
+
+</GenericList>
+
+@code {
+    public List<Sede>? Sedes { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHppt = await repository.Get<List<Sede>>("api/sedes");
+        Sedes = responseHppt.Response!;
+    }
+}
