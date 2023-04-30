@@ -2,8 +2,7 @@
 @using CurrieTechnologies.Razor.SweetAlert2;
 @inject IRepository repository
 @inject NavigationManager navigationManager
-@inject SweetAlertService swal
-
+@inject SweetAlertService sweetAlertService
 <h3>Crear Sede</h3>
 
 <SedeForm @ref="sedeForm" Sede="sede" OnValidSubmit="Create" ReturnAction="Return" />
@@ -19,12 +18,12 @@
         if (httpResponse.Error)
         {
             var mensajeError = await httpResponse.GetErrorMessageAsync();
-            await swal.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
+            await sweetAlertService.FireAsync("Error", mensajeError, SweetAlertIcon.Error);
         }
         else
         {
             sedeForm!.FormPostedSuccessfully = true;
-            navigationManager.NavigateTo("sedes");
+            navigationManager.NavigateTo("/sedes");
         }
     }
 
