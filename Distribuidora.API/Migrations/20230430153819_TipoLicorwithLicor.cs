@@ -5,19 +5,32 @@
 namespace Distribuidora.API.Migrations
 {
     /// <inheritdoc />
-    public partial class TipoLicorLicor : Migration
+    public partial class TipoLicorwithLicor : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Sedes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sedes", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "TipoLicors",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SedeId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    SedeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -36,8 +49,8 @@ namespace Distribuidora.API.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TipoLicorId = table.Column<int>(type: "int", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    TipoLicorId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,26 +64,22 @@ namespace Distribuidora.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Licors_Name",
+                name: "IX_Licors_TipoLicorId_Name",
                 table: "Licors",
+                columns: new[] { "TipoLicorId", "Name" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sedes_Name",
+                table: "Sedes",
                 column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Licors_TipoLicorId",
-                table: "Licors",
-                column: "TipoLicorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TipoLicors_Name",
+                name: "IX_TipoLicors_SedeId_Name",
                 table: "TipoLicors",
-                column: "Name",
+                columns: new[] { "SedeId", "Name" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TipoLicors_SedeId",
-                table: "TipoLicors",
-                column: "SedeId");
         }
 
         /// <inheritdoc />
@@ -81,6 +90,9 @@ namespace Distribuidora.API.Migrations
 
             migrationBuilder.DropTable(
                 name: "TipoLicors");
+
+            migrationBuilder.DropTable(
+                name: "Sedes");
         }
     }
 }

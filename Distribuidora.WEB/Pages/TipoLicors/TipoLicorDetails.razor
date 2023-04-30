@@ -1,0 +1,111 @@
+﻿@page "/tipolicores/details/{TipoLicorId:int}"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using System.Net;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+@if (tipolicor is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <h3>@tipolicor.Name</h3>
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/licores/create/@tipolicor.Id">Nuevo Tipo de Licor</a>
+        <a class="btn btn-success" href="/sedes/details/@tipolicor.SedeId">Regresar</a>
+    </div>
+
+    <GenericList MyList="licors">
+        <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Licor</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var licor in licors!)
+                    {
+                        <tr>
+                            <td>
+                                @licor.Name
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" href="/licores/edit/@licor.Id">Editar</a>
+                                <button class="btn btn-danger" @onclick=@(() => DeleteAsync(licor.Id))>Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+}
+
+@code {
+    private TipoLicor? tipolicor;
+    private List<Licor>? licors;
+
+    [Parameter]
+    public int TipoLicorId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.Get<TipoLicor>($"/api/tipolicores/{TipoLicorId}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/sedes");
+                return;
+            }
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        tipolicor = responseHttp.Response;
+        licors = tipolicor!.Licors!.ToList();
+    }
+
+    private async Task DeleteAsync(int LicorId)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Realmente deseas eliminar el registro?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.Delete($"/api/licores/{LicorId}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+        }
+
+        await LoadAsync();
+    }
+}

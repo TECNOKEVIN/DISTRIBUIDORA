@@ -1,0 +1,117 @@
+﻿@page "/sedes/details/{Id:int}"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@using System.Net;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+@if (sede is null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <h3>@sede.Name</h3>
+    <div class="mb-2">
+        <a class="btn btn-primary" href="/tipolicores/create/@sede.Id">Nuevo Tipo de licor</a>
+        <a class="btn btn-success" href="/sedes">Regresar</a>
+    </div>
+
+    <GenericList MyList="tipolicors">
+        <Body>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Tipo licores</th>
+                        <th>Licores</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var tipolicor in tipolicors!)
+                    {
+                        <tr>
+                            <td>
+                                @tipolicor.Name
+                            </td>
+                            <td>
+                                @tipolicor.LicorsNumber
+                            </td>
+                            <td>
+                                <a class="btn btn-info" href="/tipolicores/details/@tipolicor.Id">Detalles</a>
+                                <a class="btn btn-warning" href="/tipolicores/edit/@tipolicor.Id">Editar</a>
+                                <button class="btn btn-danger" @onclick=@(() => DeleteAsync(tipolicor.Id))>Borrar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </Body>
+    </GenericList>
+}
+
+@code {
+    private Sede? sede;
+    private List<TipoLicor>? tipolicors;
+
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAsync();
+    }
+
+    private async Task LoadAsync()
+    {
+        var responseHttp = await repository.Get<Sede>($"/api/sedes/{Id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode == HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("/sedes");
+                return;
+            }
+
+            var message = await responseHttp.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        sede = responseHttp.Response;
+        tipolicors = sede!.TipoLicors!.ToList();
+    }
+
+    private async Task DeleteAsync(int id)
+    {
+        var result = await sweetAlertService.FireAsync(new SweetAlertOptions
+            {
+                Title = "Confirmación",
+                Text = "¿Realmente deseas eliminar el registro?",
+                Icon = SweetAlertIcon.Question,
+                ShowCancelButton = true,
+                CancelButtonText = "No",
+                ConfirmButtonText = "Si"
+            });
+
+        var confirm = string.IsNullOrEmpty(result.Value);
+        if (confirm)
+        {
+            return;
+        }
+
+        var responseHttp = await repository.Delete($"/api/tipolicores/{id}");
+        if (responseHttp.Error)
+        {
+            if (responseHttp.HttpResponseMessage.StatusCode != HttpStatusCode.NotFound)
+            {
+                var message = await responseHttp.GetErrorMessageAsync();
+                await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+                return;
+            }
+        }
+
+        await LoadAsync();
+    }
+}
+

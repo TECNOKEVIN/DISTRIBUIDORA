@@ -18,8 +18,10 @@ namespace Distribuidora.API.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Sede>().HasIndex(s => s.Name).IsUnique();
-            modelBuilder.Entity<TipoLicor>().HasIndex(s => s.Name).IsUnique();
-            modelBuilder.Entity<Licor>().HasIndex(s => s.Name).IsUnique();
+
+            modelBuilder.Entity<TipoLicor>().HasIndex("SedeId", "Name").IsUnique();
+            modelBuilder.Entity<Licor>().HasIndex("TipoLicorId", "Name").IsUnique();
+
         }
 
     }

@@ -1,0 +1,37 @@
+﻿@page "/licores/create/{TipoLicorId:int}"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Licor</h3>
+
+<LicorForm @ref="licorForm" Licor="licor" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+
+@code {
+    private Licor licor = new();
+    private LicorForm? licorForm;
+
+    [Parameter]
+    public int TipoLicorId { get; set; }
+
+    private async Task CreateAsync()
+    {
+        licor.TipoLicorId = TipoLicorId;
+        var httpResponse = await repository.Post("/api/licores", licor);
+        if (httpResponse.Error)
+        {
+            var message = await httpResponse.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        Return();
+    }
+
+    private void Return()
+    {
+        licorForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/tipolicores/details/{TipoLicorId}");
+    }
+}

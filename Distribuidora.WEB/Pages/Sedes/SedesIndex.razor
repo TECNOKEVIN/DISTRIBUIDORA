@@ -21,21 +21,28 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th></th>
                     <th>Sede</th>
+                    <th>Tipo de Licores</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var sede in Sedes!)
                 {
-                    <tr>
-                        <td>
-                            <a href="/sedes/edit/@sede.Id" class="btn btn-warning">Editar</a>
-                            <button class="btn btn-danger" @onclick=@(() => Delete(sede))>Borrar</button>
-                        </td>
+                    <tr>                     
                         <td>
                             @sede.Name
                         </td>
+                        <td>
+                            @sede.TipoLicorsNumber
+                        </td>
+
+                        <td>
+                            <a href="/sedes/details/@sede.Id" class="btn btn-info">Detalles</a>
+                            <a href="/sedes/edit/@sede.Id" class="btn btn-warning">Editar</a>
+                            <button class="btn btn-danger" @onclick=@(() => Delete(sede))>Borrar</button>
+                        </td>
+
                     </tr>
                 }
             </tbody>

@@ -1,0 +1,39 @@
+﻿@page "/tipolicores/create/{SedeId:int}"
+@using CurrieTechnologies.Razor.SweetAlert2;
+@inject IRepository repository
+@inject NavigationManager navigationManager
+@inject SweetAlertService sweetAlertService
+
+<h3>Crear Tipo licor</h3>
+
+<TipoLicorForm @ref="tipolicorForm" TipoLicor="tipolicor" OnValidSubmit="CreateAsync" ReturnAction="Return" />
+
+@code {
+    private TipoLicor tipolicor = new();
+    private TipoLicorForm? tipolicorForm;
+
+    [Parameter]
+    public int SedeId { get; set; }
+
+    private async Task CreateAsync()
+    {
+
+        tipolicor.SedeId = SedeId;
+        var httpResponse = await repository.Post("/api/tipolicores", tipolicor);
+        if (httpResponse.Error)
+        {
+            var message = await httpResponse.GetErrorMessageAsync();
+            await sweetAlertService.FireAsync("Error", message, SweetAlertIcon.Error);
+            return;
+        }
+
+        Return();
+    }
+
+    private void Return()
+    {
+        tipolicorForm!.FormPostedSuccessfully = true;
+        navigationManager.NavigateTo($"/sedes/details/{SedeId}");
+    }
+}
+

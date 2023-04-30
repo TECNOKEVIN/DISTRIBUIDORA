@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Distribuidora.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230430151236_TipoLicor-Licor")]
-    partial class TipoLicorLicor
+    [Migration("20230430162303_AddTipoLicorsAndLicors")]
+    partial class AddTipoLicorsAndLicors
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,10 +42,8 @@ namespace Distribuidora.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("TipoLicorId", "Name")
                         .IsUnique();
-
-                    b.HasIndex("TipoLicorId");
 
                     b.ToTable("Licors");
                 });
@@ -89,10 +87,8 @@ namespace Distribuidora.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("SedeId", "Name")
                         .IsUnique();
-
-                    b.HasIndex("SedeId");
 
                     b.ToTable("TipoLicors");
                 });

@@ -23,20 +23,36 @@ namespace Distribuidora.API.Controllers
         [HttpGet]
         public async Task<ActionResult> Get()
         {
-            return Ok(await _context.Sedes.ToListAsync());
+            return Ok(await _context.Sedes
+                .Include(x => x.TipoLicors)
+                .ToListAsync());
         }
+
+        [HttpGet("full")]
+        public async Task<ActionResult> GetFull()
+        {
+            return Ok(await _context.Sedes
+                .Include(x => x.TipoLicors!)
+                .ThenInclude(x => x.Licors)
+                .ToListAsync());
+        }
+
 
         //get parametro
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Get(int id)
         {
-            var country = await _context.Sedes.FirstOrDefaultAsync(x => x.Id == id);
-            if (country is null)
+            var sede = await _context.Sedes
+                
+                .Include(x => x.TipoLicors)
+                .ThenInclude(x => x.Licors)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (sede is null)
             {
                 return NotFound();
             }
 
-            return Ok(country);
+            return Ok(sede);
         }
 
 

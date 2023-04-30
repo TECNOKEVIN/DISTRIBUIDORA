@@ -11,15 +11,14 @@ namespace Distribuidora.Shared.Entities
     public class Licor
     {
         public int Id { get; set; }
-        public int TipoLicorId { get; set; }
 
-        [Display(Name = "Licor")]
+        [Display(Name = "Licores")]
         [MaxLength(100, ErrorMessage = "El campo {0} debe tener máximo {1} caractéres.")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public string Name { get; set; } = null!;
 
+        public int TipoLicorId { get; set; }
         public TipoLicor? TipoLicor { get; set; }
-
 
     }
 }
