@@ -45,8 +45,27 @@ namespace Distribuidora.API.Controllers
         public async Task<ActionResult> Post(Sede sede)
         {
             _context.Add(sede);
-            await _context.SaveChangesAsync();
-            return Ok(sede);
+            try
+            {
+                await _context.SaveChangesAsync();
+                return Ok(sede);
+            }
+            catch (DbUpdateException dbUpdateException)
+            {
+                if (dbUpdateException.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest("Ya existe una sede con el mismo nombre.");
+                }
+                else
+                {
+                    return BadRequest(dbUpdateException.InnerException.Message);
+                }
+            }
+            catch (Exception exception)
+            {
+                return BadRequest(exception.Message);
+            }
+
         }
 
         //Update
