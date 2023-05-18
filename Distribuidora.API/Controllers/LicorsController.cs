@@ -131,5 +131,14 @@ namespace Distribuidora.API.Controllers
             await _context.SaveChangesAsync();
             return NoContent();
         }
+        [AllowAnonymous]
+        [HttpGet("combo/{tipolicorId:int}")]
+        public async Task<ActionResult> GetCombo(int tipolicorId)
+        {
+            return Ok(await _context.Licors
+                .Where(x => x.TipoLicorId == tipolicorId)
+                .ToListAsync());
+        }
+
     }
 }

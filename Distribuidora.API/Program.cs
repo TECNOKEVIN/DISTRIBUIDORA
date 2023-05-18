@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StoresG8.API.Helpers;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -74,6 +75,7 @@ builder.Services.AddIdentity<User, IdentityRole>(x =>
     .AddDefaultTokenProviders();
 
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<IFileStorage, FileStorage>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(x => x.TokenValidationParameters = new TokenValidationParameters
@@ -85,6 +87,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),
         ClockSkew = TimeSpan.Zero
     });
+
 
 var app = builder.Build();
 SeedData(app);
