@@ -4,9 +4,12 @@ using Distribuidora.API.Data;
 using Distribuidora.Shared.Entities;
 using Distribuidora.Shared.DTOs;
 using Distribuidora.API.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Distribuidora.API.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("/api/sedes")]
     public class SedesController: ControllerBase

@@ -1,9 +1,15 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
 
 <PageTitle>Distribuidora De Licores</PageTitle>
 
-<h1>Disdribuidora De Licores</h1>
+<AuthorizeView Roles="Admin">
 
-Sientase en confianza de ver nuestro catalogo de sedes y licores
+    <Authorized>
+        <p>Estas autenticado y autorizado, @context.User.Identity?.Name</p>
+    </Authorized>
+    <NotAuthorized>
+        <p>No estas autorizado</p>
+    </NotAuthorized>
+</AuthorizeView>
 
-<SurveyPrompt Title="How is Blazor working for you?" />

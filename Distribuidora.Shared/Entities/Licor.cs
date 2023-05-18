@@ -32,6 +32,8 @@ namespace Distribuidora.Shared.Entities
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public float Stock { get; set; }
 
+        //public ICollection<User>? Users { get; set; }
+
 
     }
 }
