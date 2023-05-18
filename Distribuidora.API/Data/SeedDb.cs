@@ -1,16 +1,23 @@
 ﻿using Distribuidora.API.Data;
 using Distribuidora.Shared.Entities;
+using Distribuidora.API.Services;
+using Microsoft.EntityFrameworkCore;
+using Distribuidora.Shared.Responses;
+
 
 namespace Distribuidora.API.Data
 {
     public class SeedDb
     {
         private readonly DataContext _context;
+        private readonly IApiService _apiService;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context, IApiService apiService)
         {
             _context = context;
+            _apiService = apiService;
         }
+
 
         public async Task SeedAsync()
         {

@@ -1,4 +1,5 @@
 using Distribuidora.API.Data;
+using Distribuidora.API.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 //Inyeccion de dependencia del servivio SQL server
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=DefaultConnection"));
 builder.Services.AddTransient<SeedDb>();
+builder.Services.AddScoped<IApiService, ApiService>();
 
 var app = builder.Build();
 SeedData(app);
