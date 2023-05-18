@@ -10,11 +10,11 @@ main[b-8fuylqfjil] {
 }
 
 .sidebar[b-8fuylqfjil] {
-    background-color: #FF0E00;
+    background-image: linear-gradient(gray, cyan);
 }
 
 .top-row[b-8fuylqfjil] {
-    background-color: #f7f7f7;
+    background-color: gray;
     border-bottom: 1px solid #d6d5d5;
     justify-content: flex-end;
     height: 3.5rem;
@@ -148,4 +148,7 @@ main[b-8fuylqfjil] {
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
     }
+}
+.nav-link btn btn-link {
+    color: white;
 }
