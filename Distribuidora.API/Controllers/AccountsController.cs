@@ -1,6 +1,8 @@
 ﻿using Distribuidora.API.Helpers;
 using Distribuidora.Shared.DTOs;
 using Distribuidora.Shared.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -90,6 +92,32 @@ namespace Distribuidora.API.Controllers
                 Expiration = expiration
             };
         }
+
+        //[HttpPost("changePassword")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //public async Task<ActionResult> ChangePasswordAsync(ChangePasswordDTO model)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+
+        //    var user = await _userHelper.GetUserAsync(User.Identity!.Name!);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var result = await _userHelper.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        //    if (!result.Succeeded)
+        //    {
+        //        return BadRequest(result.Errors.FirstOrDefault().Description);
+        //    }
+
+        //    return NoContent();
+        //}
+
+
     }
 }
 

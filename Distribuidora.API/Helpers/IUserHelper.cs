@@ -19,7 +19,6 @@ namespace Distribuidora.API.Helpers
         Task<SignInResult> LoginAsync(LoginDTO model);
 
         Task LogoutAsync();
-
     }
 
 
