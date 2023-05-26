@@ -45,7 +45,7 @@ namespace Distribuidora.WEB.Repositories
         {
             var messageJSON = JsonSerializer.Serialize(model);
             var messageContet = new StringContent(messageJSON, Encoding.UTF8, "application/json");
-            var responseHttp = await _httpClient.PostAsync(url, messageContet);
+            var responseHttp = await _httpClient.PostAsync(url, messageContet);//aqui mostro error
             if (responseHttp.IsSuccessStatusCode)
             {
                 var response = await UnserializeAnswer<TResponse>(responseHttp, _jsonDefaultOptions);

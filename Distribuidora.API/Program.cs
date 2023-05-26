@@ -121,7 +121,7 @@ app.MapControllers();
 app.UseCors(x => x
     .AllowAnyMethod()
     .AllowAnyHeader()
-    .SetIsOriginAllowed(origin => true)
+    .SetIsOriginAllowed(origin => false)
     .AllowCredentials());
 
 

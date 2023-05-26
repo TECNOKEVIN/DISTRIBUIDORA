@@ -28,7 +28,7 @@ namespace Distribuidora.API.Data
             await _context.Database.EnsureCreatedAsync();
             await CheckSedesAsync();
             await CheckRolesAsync();
-            await CheckUserAsync("123", "KL", "KL", "kl@yopmail.com", "300445555", "CR 78 9687", UserType.Admin);
+            await CheckUserAsync("1010", "KL", "KL", "kl@yopmail.com", "300445555", "CR 78 9687", UserType.Admin);
 
         }
 
@@ -50,7 +50,7 @@ namespace Distribuidora.API.Data
                     UserType = userType,
                 };
 
-                await _userHelper.AddUserAsync(user, "12345");
+                await _userHelper.AddUserAsync(user, "123456");
                 await _userHelper.AddUserToRoleAsync(user, userType.ToString());
             }
 

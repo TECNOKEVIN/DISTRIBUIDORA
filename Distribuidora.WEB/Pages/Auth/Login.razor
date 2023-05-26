@@ -10,41 +10,43 @@
 <div class="row">
     <div class="col-md-4  offset-md-4">
 
-<EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
+        <EditForm Model="loginDTO" OnValidSubmit="LoginAsync">
     <DataAnnotationsValidator />
-        <div class="card bg-light">
+             <div class="card bg-light">
                 <div class="card-header justify-content-center">
                     <span>
                         <i class="oi oi-account-login" /> Iniciar Sesión
                         <button class="btn btn-sm btn-primary float-end" type="submit"><i class="oi oi-check" /> Iniciar Sesión</button>
                     </span>
                 </div>
-            </div>
                 <div class="card-body">
-
-                <label>Email:</label>
-                <div>
-                    <InputText class="form-control" @bind-Value="@loginDTO.Email" />
-                    <ValidationMessage For="@(() => loginDTO.Email)" />
+                    <div class="mb-3">
+                        <label>Email:</label>
+                        <div>
+                            <InputText class="form-control" @bind-Value="@loginDTO.Email" />
+                            <ValidationMessage For="@(() => loginDTO.Email)" />
+                        </div>
+                    </div>
+                           <div class="card-body">
+                        <label>Contraseña:</label>
+                        <div>
+                            <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
+                            <ValidationMessage For="@(() => loginDTO.Password)" />
+                        </div>
+                    </div>
                 </div>
             </div>
-        <div class="card-body">
-                <label>Contraseña:</label>
-                <div>
-                    <InputText type="password" class="form-control" @bind-Value="@loginDTO.Password" />
-                    <ValidationMessage For="@(() => loginDTO.Password)" />
-                </div>
-            </div>
-            <button class="btn btn-primary" type="submit">Iniciar Sesión</button>
-</EditForm>
+        </EditForm>
     </div>
 </div>
+
+
 @code {
     private LoginDTO loginDTO = new();
 
     private async Task LoginAsync()
     {
-        var responseHttp = await repository.Post<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);
+        var responseHttp = await repository.Post<LoginDTO, TokenDTO>("/api/accounts/Login", loginDTO);//fallo aqui
         if (responseHttp.Error)
         {
             var message = await responseHttp.GetErrorMessageAsync();
